@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Solid.Data;
+using Solid.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<SolidBaseContext>(options => 
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+
+builder.Services.AddDbContext<CompanyDbContext>(options => 
                 options.UseMySql(
                     builder.Configuration.GetConnectionString("MySqlConnection"),
                     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));

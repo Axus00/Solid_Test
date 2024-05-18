@@ -1,17 +1,36 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Solid.Data;
+using Solid.Services;
+using Solid.Models;
 
-namespace Solid.Controllers;
-
-public class CompaniesController : ControllerBase
+namespace Solid.Controllers
 {
-    private readonly SolidBaseContext _context;
-    //CONSTRUCTOR
-    public CompaniesController(SolidBaseContext context)
+    
+    [ApiController]
+    [Route("api/[companies]")]
+    public class CompaniesController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly ICompanyRepository _companyRepository;
+        public CompaniesController(ICompanyRepository companyRepository)
+        {
+            _companyRepository = companyRepository;
+        }
 
-    //funcionalidades
+        [HttpGet]
+        [Route("listar")]
+        //listar
+        public IEnumerable<Company> GetUsers(){
+            return _companyRepository.GetCompanies();
+        }
+        [HttpGet]
+        [Route("listar/{id}")]
+        //Detalles
+        public Company Details(int id)
+        {
+            return _companyRepository.GetById(id);
+        }
+    }
 }
